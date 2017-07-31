@@ -9,17 +9,18 @@ namespace IdentityServer4Sample.ConsoleClient
         static void Main(string[] args)
         {
             Console.WriteLine("Press any key to start execution when the servers are ready.");
-            Console.Read();
+            Console.ReadLine();
             // discover endpoints from metadata
             var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result;
                         // request token
-            var tokenClient = new TokenClient(disco.TokenEndpoint, "client", "secret");
-            var tokenResponse = tokenClient.RequestClientCredentialsAsync("api1").Result;
+            var tokenClient = new TokenClient(disco.TokenEndpoint, "ro.client", "secret");
+            var tokenResponse = tokenClient.RequestResourceOwnerPasswordAsync("Mustafa", "password", "api1").Result;
+
+            //var tokenResponse = tokenClient.RequestClientCredentialsAsync("api1").Result;
 
             if (tokenResponse.IsError)
             {
                 Console.WriteLine(tokenResponse.Error);
-                return;
             }
 
             Console.WriteLine(tokenResponse.Json);

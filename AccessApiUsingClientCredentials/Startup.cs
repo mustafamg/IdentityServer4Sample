@@ -19,7 +19,10 @@ namespace AccessApiUsingClientCredentials
             services.AddIdentityServer()
                 .AddTemporarySigningCredential() 
                 .AddInMemoryApiResources(Config.GetApiResources())
-        .AddInMemoryClients(Config.GetClients());;
+                .AddInMemoryClients(Config.GetClients())
+                .AddTestUsers(Config.GetUsers());
+            services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +36,8 @@ namespace AccessApiUsingClientCredentials
             }
 
             app.UseIdentityServer();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
