@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using IdentityServer4;
+using System.Security.Claims;
 
 namespace IdentityServer4Sample.Server
 {
@@ -101,13 +102,23 @@ namespace IdentityServer4Sample.Server
                 {
                     SubjectId = "1",
                     Username = "Mustafa",
-                    Password = "password"
+                    Password = "password",
+                    Claims = new []
+                    {
+                        new Claim("name", "Mustafa"),
+                        new Claim("website", "https://mustafamg.com")
+                    }
                 },
                 new TestUser
                 {
                     SubjectId = "2",
                     Username = "Mohammad",
-                    Password = "password"
+                    Password = "password",
+                     Claims = new []
+                    {
+                        new Claim("name", "Mohammad"),
+                        new Claim("website", "https://mustafamg.com")
+                    }
                 }
             };
         }
