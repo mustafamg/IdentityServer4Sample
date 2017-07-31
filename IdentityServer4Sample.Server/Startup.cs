@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace AccessApiUsingClientCredentials
+namespace IdentityServer4Sample.Server
 {
     public class Startup
     {
@@ -20,7 +20,8 @@ namespace AccessApiUsingClientCredentials
                 .AddTemporarySigningCredential() 
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                .AddTestUsers(Config.GetUsers());
+                .AddTestUsers(Config.GetUsers())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources());
             services.AddMvc();
 
         }

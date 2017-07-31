@@ -15,13 +15,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "AccessApiUsingClientCredentials": {
+    "IdentityServer4Sample.Server": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:58829"
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

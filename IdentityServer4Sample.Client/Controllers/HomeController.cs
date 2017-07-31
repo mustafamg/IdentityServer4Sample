@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityServer4Sample.Client.Controllers
 {
@@ -13,7 +14,6 @@ namespace IdentityServer4Sample.Client.Controllers
         {
             return View();
         }
-
         public async Task<IActionResult> About()
         {
             //ViewData["Message"] = "Your application description page.";
@@ -29,12 +29,18 @@ namespace IdentityServer4Sample.Client.Controllers
             }
             return Content(tokenResponse.Json.ToString());
         }
-
+        [Authorize]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
 
             return View();
+        }
+
+        public async Task Logout()
+        {
+            await HttpContext.Authentication.SignOutAsync("Cookies");
+            await HttpContext.Authentication.SignOutAsync("oidc");
         }
 
         public IActionResult Error()
