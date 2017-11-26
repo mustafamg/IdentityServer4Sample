@@ -24,7 +24,7 @@ namespace IdentityServer4Sample.ConsoleClient
             }
 
             Console.WriteLine(tokenResponse.Json);
-                        // call api
+            // call api
             var client = new HttpClient();
             client.SetBearerToken(tokenResponse.AccessToken);
 

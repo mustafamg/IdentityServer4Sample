@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using IdentityServer4WithAspNetIdentity.Data;
 using IdentityServer4WithAspNetIdentity.Models;
 using IdentityServer4WithAspNetIdentity.Services;
+using IdentityServer4WithAspNetIdentity.CustomIdentity;
+using System.Data.SqlClient;
 
 namespace IdentityServer4WithAspNetIdentity
 {
@@ -26,12 +22,14 @@ namespace IdentityServer4WithAspNetIdentity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            // Identity Services
+            services.AddTransient<IUserStore<ApplicationUser>, CustomUserStore>();
+            services.AddTransient<IRoleStore<IdentityRole>, CustomRoleStore>();
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddTransient<SqlConnection>(e => new SqlConnection(connectionString));
+            services.AddTransient<DapperUsersTable>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
