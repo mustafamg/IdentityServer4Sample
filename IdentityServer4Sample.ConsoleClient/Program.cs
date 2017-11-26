@@ -14,7 +14,7 @@ namespace IdentityServer4Sample.ConsoleClient
             var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result;
                         // request token
             var tokenClient = new TokenClient(disco.TokenEndpoint, "ro.client", "secret");
-            var tokenResponse = tokenClient.RequestResourceOwnerPasswordAsync("Mustafa", "password", "api1").Result;
+            var tokenResponse = tokenClient.RequestResourceOwnerPasswordAsync("test@test.com", "Admin@123", "api1").Result;
 
             //var tokenResponse = tokenClient.RequestClientCredentialsAsync("api1").Result;
 
