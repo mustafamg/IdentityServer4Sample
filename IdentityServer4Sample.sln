@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4Sample.WebApi", "IdentityServer4Sample.WebApi\IdentityServer4Sample.WebApi.csproj", "{6EB6E1DA-F2DD-47ED-B10D-FF413E6BDD74}"
 EndProject
@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4Sample.Clien
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4Sample.Server", "IdentityServer4Sample.Server\IdentityServer4Sample.Server.csproj", "{94FBAD3A-49FB-42CD-8CEA-E63A71A032B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4Sample.JsClient", "IdentityServer4Sample.JsClient\IdentityServer4Sample.JsClient.csproj", "{807B098C-DAB7-4D9B-887D-EABCE949F01D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4Sample.JsClient", "IdentityServer4Sample.JsClient\IdentityServer4Sample.JsClient.csproj", "{807B098C-DAB7-4D9B-887D-EABCE949F01D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer4WithAspNetIdentity", "IdentityServer4WithAspNetIdentity\IdentityServer4WithAspNetIdentity.csproj", "{71475FB3-ADC0-4CBB-9C1B-70EF3A0432F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +41,15 @@ Global
 		{807B098C-DAB7-4D9B-887D-EABCE949F01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{807B098C-DAB7-4D9B-887D-EABCE949F01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{807B098C-DAB7-4D9B-887D-EABCE949F01D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71475FB3-ADC0-4CBB-9C1B-70EF3A0432F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71475FB3-ADC0-4CBB-9C1B-70EF3A0432F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71475FB3-ADC0-4CBB-9C1B-70EF3A0432F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71475FB3-ADC0-4CBB-9C1B-70EF3A0432F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B388E95-B46F-459C-B7FE-D48CEB62C6E8}
 	EndGlobalSection
 EndGlobal
