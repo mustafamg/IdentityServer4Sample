@@ -29,7 +29,7 @@ namespace IdentityServer4WithAspNetIdentity
             services.AddTransient<IRoleStore<IdentityRole>, CustomRoleStore>();
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddTransient<SqlConnection>(e => new SqlConnection(connectionString));
-            services.AddTransient<DapperUsersTable>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

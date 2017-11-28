@@ -7,10 +7,12 @@ using Dapper;
 
 namespace IdentityServer4WithAspNetIdentity.CustomIdentity
 {
-    public class DapperUsersTable
+    public class UserRepository : IUserRepository
     {
         private readonly SqlConnection _connection;
-        public DapperUsersTable(SqlConnection connection)
+        Func<string,string> selectUserStmnt = (param)=> $"SELECT * FROM dbo.CustomUser WHERE {param} = @{param};";
+
+        public UserRepository(SqlConnection connection)
         {
             _connection = connection;
         }
@@ -18,8 +20,7 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
         #region createuser
         public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {
-            string sql = "INSERT INTO dbo.CustomUser " +
-                "VALUES (@id, @Email, @EmailConfirmed, @PasswordHash, @UserName)";
+            string sql = "INSERT INTO dbo.CustomUser VALUES (@id, @Email, @EmailConfirmed, @PasswordHash, @UserName)";
 
             int rows = await _connection.ExecuteAsync(sql, new { user.Id, user.Email, user.EmailConfirmed, user.PasswordHash, user.UserName });
 
@@ -46,9 +47,7 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
 
         public async Task<ApplicationUser> FindByIdAsync(Guid userId)
         {
-            string sql = "SELECT * " +
-                        "FROM dbo.CustomUsers " +
-                        "WHERE Id = @Id;";
+            string sql = selectUserStmnt("Id");
 
             return await _connection.QuerySingleOrDefaultAsync<ApplicationUser>(sql, new
             {
@@ -57,11 +56,9 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
         }
 
 
-        public async Task<ApplicationUser> FindByNameAsync(string userName)
+        public async Task<ApplicationUser> FindByUserNameAsync(string userName)
         {
-            string sql = "SELECT * " +
-                        "FROM dbo.CustomUser " +
-                        "WHERE UserName = @UserName;";
+            string sql = selectUserStmnt("UserName");
 
             return await _connection.QuerySingleOrDefaultAsync<ApplicationUser>(sql, new
             {

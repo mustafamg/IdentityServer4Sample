@@ -10,9 +10,9 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
 {
     public class CustomUserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
     {
-        private readonly DapperUsersTable _usersTable;
+        private readonly IUserRepository _usersTable;
 
-        public CustomUserStore(DapperUsersTable usersTable)
+        public CustomUserStore(IUserRepository usersTable)
         {
             _usersTable = usersTable;
         }
@@ -63,7 +63,7 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
             cancellationToken.ThrowIfCancellationRequested();
             if (userName == null) throw new ArgumentNullException(nameof(userName));
 
-            return await _usersTable.FindByNameAsync(userName);
+            return await _usersTable.FindByUserNameAsync(userName);
         }
 
         public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
