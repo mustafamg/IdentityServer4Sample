@@ -7,6 +7,7 @@ using IdentityServer4WithAspNetIdentity.Models;
 using IdentityServer4WithAspNetIdentity.Services;
 using IdentityServer4WithAspNetIdentity.CustomIdentity;
 using System.Data.SqlClient;
+using IdentityServer4;
 
 namespace IdentityServer4WithAspNetIdentity
 {
@@ -44,6 +45,15 @@ namespace IdentityServer4WithAspNetIdentity
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>();
+
+            services.AddAuthentication()
+            .AddFacebook(facebookOptions =>
+            {
+                // dotnet user-secrets set Authentication:Facebook: AppId < app - id >
+                // dotnet user - secrets set Authentication:Facebook: AppSecret < app - secret >
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
