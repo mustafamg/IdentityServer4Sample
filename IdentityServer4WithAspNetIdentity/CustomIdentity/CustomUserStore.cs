@@ -8,25 +8,29 @@ using System.Threading.Tasks;
 
 namespace IdentityServer4WithAspNetIdentity.CustomIdentity
 {
-    public class CustomUserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>
+    public class CustomUserStore :
+        IUserStore<ApplicationUser>,
+        IUserPasswordStore<ApplicationUser>,
+        IUserLoginStore<ApplicationUser>
     {
-        private readonly IUserRepository _usersTable;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserLoginRepository _loginRepo;
 
-        public CustomUserStore(IUserRepository usersTable)
+        public CustomUserStore(IUserRepository usersRepo, IUserLoginRepository loginRepo)
         {
-            _usersTable = usersTable;
+            _userRepository = usersRepo;
+            _loginRepo = loginRepo;
         }
 
-        #region createuser
         public async Task<IdentityResult> CreateAsync(ApplicationUser user,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null) throw new ArgumentNullException(nameof(user));
 
-            return await _usersTable.CreateAsync(user);
+            return await _userRepository.CreateAsync(user);
         }
-        #endregion
+
 
         public async Task<IdentityResult> DeleteAsync(ApplicationUser user,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -34,7 +38,7 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
             cancellationToken.ThrowIfCancellationRequested();
             if (user == null) throw new ArgumentNullException(nameof(user));
 
-            return await _usersTable.DeleteAsync(user);
+            return await _userRepository.DeleteAsync(user);
 
         }
 
@@ -47,13 +51,14 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
         {
             cancellationToken.ThrowIfCancellationRequested();
             if (userId == null) throw new ArgumentNullException(nameof(userId));
+
             Guid idGuid;
             if (!Guid.TryParse(userId, out idGuid))
             {
                 throw new ArgumentException("Not a valid Guid id", nameof(userId));
             }
 
-            return await _usersTable.FindByIdAsync(idGuid);
+            return await _userRepository.FindByIdAsync(idGuid);
 
         }
 
@@ -63,7 +68,7 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
             cancellationToken.ThrowIfCancellationRequested();
             if (userName == null) throw new ArgumentNullException(nameof(userName));
 
-            return await _usersTable.FindByUserNameAsync(userName);
+            return await _userRepository.FindByUserNameAsync(userName);
         }
 
         public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
@@ -125,10 +130,42 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
         {
             throw new NotImplementedException();
         }
-
         public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
+
+        void IDisposable.Dispose()
+        {
+            
+        }
+
+        #region IUserLoginStore
+
+        public async Task AddLoginAsync(ApplicationUser user, UserLoginInfo login, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var userLogin = await FindByLoginAsync(login.LoginProvider, login.ProviderKey,cancellationToken);
+            if (userLogin != null)
+                await _loginRepo.AddLoginAsync(user.Id, login);
+        }
+        public async Task<ApplicationUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            var user = await _loginRepo.FindByLoginAsync(loginProvider, providerKey);
+            return user;
+        }
+
+        public Task<IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task RemoveLoginAsync(ApplicationUser user, string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await _loginRepo.RemoveLoginAsync(user.Id, loginProvider, providerKey);
+        }
+
+        #endregion
     }
 }

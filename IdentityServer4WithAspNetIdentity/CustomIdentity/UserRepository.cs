@@ -65,5 +65,19 @@ namespace IdentityServer4WithAspNetIdentity.CustomIdentity
                 UserName = userName
             });
         }
+
+        public async Task<IdentityResult> UpdateAsync(ApplicationUser user)
+        {
+            string sql = "Update dbo.CustomUser set Id=@id, Email = @Email, EmailConfirmed = @EmailConfirmed"+
+                ", PasswordHash= @PasswordHash, UserName = @UserName)";
+
+            int rows = await _connection.ExecuteAsync(sql, new { user.Id, user.Email, user.EmailConfirmed, user.PasswordHash, user.UserName });
+
+            if (rows > 0)
+            {
+                return IdentityResult.Success;
+            }
+            return IdentityResult.Failed(new IdentityError { Description = $"Could not insert user {user.Email}." });
+        }
     }
 }

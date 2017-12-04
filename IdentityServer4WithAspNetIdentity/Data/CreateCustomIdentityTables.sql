@@ -32,3 +32,16 @@ GO
 
 ALTER TABLE [dbo].[CustomUserClaim] CHECK CONSTRAINT [FK_dbo.CustomUserClaim_dbo.CustomUser_UserId]
 GO
+
+CREATE TABLE [dbo].[CustomUserLogins] (
+    [LoginProvider]       NVARCHAR (450) NOT NULL,
+    [ProviderKey]         NVARCHAR (450) NOT NULL,
+    [ProviderDisplayName] NVARCHAR (MAX) NULL,
+    [UserId]              [uniqueidentifier] NOT NULL,
+    CONSTRAINT [PK_CustomUserLogins] PRIMARY KEY CLUSTERED ([LoginProvider] ASC, [ProviderKey] ASC),
+    CONSTRAINT [FK_CustomUserLogins_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[CustomUser] ([Id]) ON DELETE CASCADE
+);
+
+GO
+CREATE NONCLUSTERED INDEX [IX_CustomUserLogins_UserId]
+    ON [dbo].[CustomUserLogins]([UserId] ASC);

@@ -31,7 +31,7 @@ namespace IdentityServer4WithAspNetIdentity
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddTransient<SqlConnection>(e => new SqlConnection(connectionString));
             services.AddTransient<IUserRepository, UserRepository>();
-
+            services.AddTransient<IUserLoginRepository, UserLoginRepository>();
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
@@ -47,13 +47,13 @@ namespace IdentityServer4WithAspNetIdentity
                 .AddAspNetIdentity<ApplicationUser>();
 
             services.AddAuthentication()
-            .AddFacebook(facebookOptions =>
-            {
-                // dotnet user-secrets set Authentication:Facebook: AppId < app - id >
-                // dotnet user - secrets set Authentication:Facebook: AppSecret < app - secret >
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+                .AddFacebook(facebookOptions =>
+                {
+                    // dotnet user-secrets set Authentication:Facebook: AppId < app - id >
+                    // dotnet user - secrets set Authentication:Facebook: AppSecret < app - secret >
+                    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
